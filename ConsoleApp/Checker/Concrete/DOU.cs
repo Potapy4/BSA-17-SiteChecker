@@ -10,15 +10,9 @@ namespace ConsoleApp.Checker.Concrete
         {
             var request = (HttpWebRequest)WebRequest.Create(Url);
             request.Method = "HEAD"; // For status code only, without body response
-            try
-            {
-                var response = (HttpWebResponse)request.GetResponse();
-                return (int)response.StatusCode == 200 ? "DOU.UA ONLINE" : $"DOU.UA RETURNED A STATUS CODE: {(int)response.StatusCode}";
-            }
-            catch
-            {
-                return "DOU.UA OFFLINE"; 
-            }            
+            var response = (HttpWebResponse)request.GetResponse();
+
+            return (int)response.StatusCode == 200 ? "DOU.UA ONLINE" : "DOU.UA OFFLINE";
         }
     }
 }
