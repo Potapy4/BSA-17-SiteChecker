@@ -8,11 +8,23 @@ namespace ConsoleApp.Checker.Concrete
 
         public string Check()
         {
+            string result = null;
             var request = (HttpWebRequest)WebRequest.Create(Url);
-            request.Method = "HEAD"; // For status code only, without body response
-            var response = (HttpWebResponse)request.GetResponse();
+            request.Method = "HEAD"; // For status code only, without body response      
 
-            return (int)response.StatusCode == 200 ? "DOU.UA ONLINE" : $"DOU.UA RETURNED STATUS CODE: {response.StatusCode}";
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    result = "DOU.UA IS ONLINE";
+                }
+            }
+            catch (WebException ex)
+            {
+                result = ex.Message;
+            }
+
+            return result;
         }
     }
 }
